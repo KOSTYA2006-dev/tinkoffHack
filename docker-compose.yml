@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: kolokola
+      POSTGRES_DB: Tinkoff
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  app:
+    build: .
+    container_name: tinkoff_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/Tinkoff
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: kolokola
+    depends_on:
+      - postgres
+    ports:
+      - "8089:8089"
+volumes:
+  postgres_data:
